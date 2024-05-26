@@ -32,7 +32,7 @@ describe("Checks for ChatStore selectors", () => {
   function generateChatMessage(index: number): ChatMessage {
     const user = generateChatUser(index);
     return {
-      author: user,
+      nickname: user,
       text: `It's generated message from ${user.name}`,
       date: new Date().toISOString(),
     };
@@ -47,7 +47,6 @@ describe("Checks for ChatStore selectors", () => {
 
   const initialState: ChatState = {
     messages: [...Array(10).keys()].map((index) => generateChatMessage(index)),
-    users: [...Array(5).keys()].map((index) => generateChatUser(index)),
     status: ChatStatus.READY,
     errors: [...Array(10).keys()].map((index) => generateChatError(index)),
   };
@@ -63,7 +62,6 @@ describe("Checks for ChatStore selectors", () => {
       selectMessages(store.getState()),
       store.getState().messages,
     ],
-    ["selectUsers", selectUsers(store.getState()), store.getState().users],
     ["selectErrors", selectErrors(store.getState()), store.getState().errors],
     ["selectStatus", selectStatus(store.getState()), store.getState().status],
     [

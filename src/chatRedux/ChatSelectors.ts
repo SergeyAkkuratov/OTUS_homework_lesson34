@@ -1,4 +1,4 @@
-import { ChatMessage, ChatState, ChatUser } from "./ChatState";
+import { ChatMessage, ChatState } from "./ChatState";
 
 export function selectMessages(state: ChatState): ChatMessage[] {
   return state.messages;
@@ -6,9 +6,9 @@ export function selectMessages(state: ChatState): ChatMessage[] {
 
 export function selectMessagesFromAuthor(
   state: ChatState,
-  author: ChatUser,
+  nickname: string,
 ): ChatMessage[] {
-  return state.messages.filter((message) => message.author === author);
+  return state.messages.filter((message) => message.nickname === nickname);
 }
 
 export function selectMessagesAfterDate(
@@ -16,17 +16,6 @@ export function selectMessagesAfterDate(
   date: Date,
 ): ChatMessage[] {
   return state.messages.filter((message) => new Date(message.date) > date);
-}
-
-export function selectUsers(state: ChatState): ChatUser[] {
-  return state.users;
-}
-
-export function selectUsersWithNameIncludes(
-  state: ChatState,
-  name: string,
-): ChatUser[] {
-  return state.users.filter((user) => user.name.includes(name));
 }
 
 export function selectStatus(state: ChatState) {

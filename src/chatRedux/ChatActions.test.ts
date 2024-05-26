@@ -5,20 +5,13 @@ import {
   ChatMessage,
   ChatState,
   ChatStatus,
-  ChatUser,
   initialState,
 } from "./ChatState";
 import {
   ChatAction,
-  fetchMessageFailure,
-  fetchMessageRequest,
-  fetchMessageSuccess,
   fetchMessagesFailure,
   fetchMessagesRequest,
   fetchMessagesSuccess,
-  fetchUsersFailure,
-  fetchUsersRequest,
-  fetchUsersSuccess,
   searchMessages,
   sendMessageFailure,
   sendMessageRequest,
@@ -32,30 +25,16 @@ describe("Test for Actions", () => {
     message: "This is test error record",
   };
 
-  function generateChatUser(index: number): ChatUser {
-    return {
-      login: `login-${index}`,
-      name: `USER-${index}`,
-      email: `user${index}@email.com`,
-      role: Math.floor(Math.random() * 3),
-    };
-  }
-
   function generateChatMessage(index: number): ChatMessage {
-    const user = generateChatUser(index);
     return {
-      author: user,
-      text: `It's generated message from ${user.name}`,
+      nickname: `USER-${index}`,
+      text: `It's generated message from USER-${index}`,
       date: new Date().toISOString(),
     };
   }
 
   function generateChatMessages(size: number): ChatMessage[] {
     return [...Array(size).keys()].map((index) => generateChatMessage(index));
-  }
-
-  function generateChatUsers(size: number): ChatUser[] {
-    return [...Array(size).keys()].map((index) => generateChatUser(index));
   }
 
   beforeEach(() => {
@@ -69,7 +48,6 @@ describe("Test for Actions", () => {
     const testState: ChatState = {
       messages: [],
       errors: [],
-      users: [],
       status: ChatStatus.ERROR,
     };
 
@@ -84,9 +62,7 @@ describe("Test for Actions", () => {
   });
 
   it.each([
-    [fetchMessageRequest()],
     [fetchMessagesRequest()],
-    [fetchUsersRequest()],
     [sendMessageRequest()],
   ])("Check request action for %p", (action) => {
     store.dispatch(action);
@@ -94,26 +70,12 @@ describe("Test for Actions", () => {
   });
 
   it.each([
-    [fetchMessageFailure(testError)],
     [fetchMessagesFailure(testError)],
-    [fetchUsersFailure(testError)],
     [sendMessageFailure(testError)],
   ])("Check failure action for %p", (action) => {
     store.dispatch(action);
     expect(store.getState().status).toBe(ChatStatus.ERROR);
     expect(store.getState().errors[0]).toBe(testError);
-  });
-
-  it("Check fetch message action", () => {
-    const message1 = generateChatMessage(0);
-    const message2 = generateChatMessage(1);
-
-    store.dispatch(fetchMessageSuccess(message1));
-    expect(store.getState().status).toBe(ChatStatus.READY);
-    expect(store.getState().messages).toEqual([message1]);
-
-    store.dispatch(fetchMessageSuccess(message2));
-    expect(store.getState().messages).toEqual([message1, message2]);
   });
 
   it("Check fetch messages action", () => {
@@ -126,18 +88,6 @@ describe("Test for Actions", () => {
 
     store.dispatch(fetchMessagesSuccess(message2));
     expect(store.getState().messages).toEqual([...message1, ...message2]);
-  });
-
-  it("Check fetch users action", () => {
-    const users1 = generateChatUsers(5);
-    const users2 = generateChatUsers(5);
-
-    store.dispatch(fetchUsersSuccess(users1));
-    expect(store.getState().status).toBe(ChatStatus.READY);
-    expect(store.getState().users).toEqual(users1);
-
-    store.dispatch(fetchUsersSuccess(users2));
-    expect(store.getState().users).toEqual(users2);
   });
 
   it("Check send message action", () => {
