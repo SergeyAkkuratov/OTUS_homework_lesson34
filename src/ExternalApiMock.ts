@@ -26,27 +26,35 @@ function generateChatUsers(size: number): ChatUser[] {
     return [...Array(size).keys()].map((index) => generateChatUser(index));
 }
 
+let currentMessages: ChatMessage[] = generateChatMessages(10);
+let currentUsers: ChatUser[] = generateChatUsers(10);
+let lastSendMessage: ChatMessage;
+
 export async function fetchMessages(size: number = 10, error: boolean = false): Promise<ChatMessage[]> {
+    currentMessages = generateChatMessages(size);
     return new Promise<ChatMessage[]>((resolve, reject) => {
         if(error) {
             reject(new Error("fetchMessages throw error"));
         } else {
-            resolve(generateChatMessages(size));
+            resolve(currentMessages);
         }
     });
 }
 
 export async function fetchMessage(error: boolean = false): Promise<ChatMessage> {
+    const message = generateChatMessage(1);
+    currentMessages.push(message);
     return new Promise<ChatMessage>((resolve, reject) => {
         if(error) {
             reject(new Error("fetchMessage throw error"));
         } else {
-            resolve(generateChatMessage(1));
+            resolve(message);
         }
     });
 }
 
-export async function sendMessage(error: boolean = false): Promise<void> {
+export async function sendMessage(message: ChatMessage, error: boolean = false): Promise<void> {
+    lastSendMessage = message;
     return new Promise<void>((resolve, reject) => {
         if(error){
             reject(new Error("sendMessage throw error"));
@@ -57,11 +65,24 @@ export async function sendMessage(error: boolean = false): Promise<void> {
 }
 
 export async function fetchUsers(size: number = 10, error: boolean = false) {
+    currentUsers = generateChatUsers(size);
     return new Promise<ChatUser[]>((resolve, reject) => {
         if(error) {
             reject(new Error("fetchUsers throw error"));
         } else {
-            resolve(generateChatUsers(size));
+            resolve(currentUsers);
         }
     });
+}
+
+export function getCurrentMessages() {
+    return currentMessages;
+}
+
+export function getCurrentUsers() {
+    return currentUsers;
+}
+
+export function getLastSendMEssage() {
+    return lastSendMessage;
 }
