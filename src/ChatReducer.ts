@@ -1,6 +1,6 @@
-import { ChatAction, ChatActionTypes, ChatFilter } from "./ChatActions";
-import ChatError from "./ChatError";
+import { ChatAction, ChatActionTypes } from "./ChatActions";
 import {
+  ChatError,
   ChatMessage,
   ChatState,
   ChatStatus,
@@ -54,8 +54,9 @@ export default function rootChatReducer(
         users: action.payload as ChatUser[],
       };
     case ChatActionTypes.SEARCH_MESSAGES: {
-      const filter = action.payload as ChatFilter;
-      const newMessages = state.messages.filter(message => filter(message));
+      const newMessages = state.messages.filter((message) =>
+        message.text.includes(action.payload as string),
+      );
       return { ...state, messages: newMessages };
     }
     default:

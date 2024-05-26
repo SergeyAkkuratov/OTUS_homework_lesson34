@@ -1,6 +1,5 @@
 import { Action } from "@reduxjs/toolkit";
-import { ChatMessage, ChatUser } from "./ChatState";
-import ChatError from "./ChatError";
+import { ChatError, ChatMessage, ChatUser } from "./ChatState";
 
 export enum ChatActionTypes {
   FETCH_MESSAGES_REQUEST = "FETCH_MESSAGES_REQUEST",
@@ -15,16 +14,12 @@ export enum ChatActionTypes {
   FETCH_USERS_REQUEST = "FETCH_USERS_REQUEST",
   FETCH_USERS_SUCCESS = "FETCH_USERS_SUCCESS",
   FETCH_USERS_FAILURE = "FETCH_USERS_FAILURE",
-  SEARCH_MESSAGES = "SEARCH_MESSAGES"
+  SEARCH_MESSAGES = "SEARCH_MESSAGES",
 }
 
 export interface ChatAction extends Action {
   type: ChatActionTypes;
   payload?: unknown;
-}
-
-export interface ChatFilter {
-  (message: ChatMessage): boolean;
 }
 
 export function fetchMessagesRequest(): ChatAction {
@@ -107,9 +102,9 @@ export function sendMessageFailure(error: ChatError): ChatAction {
   };
 }
 
-export function searchMessages(filter: ChatFilter): ChatAction {
+export function searchMessages(query: string): ChatAction {
   return {
     type: ChatActionTypes.SEARCH_MESSAGES,
-    payload: filter,
+    payload: query,
   };
 }

@@ -1,5 +1,3 @@
-import ChatError from "./ChatError";
-
 export enum ChatRole {
   ADMIN,
   USER,
@@ -9,7 +7,7 @@ export enum ChatRole {
 export enum ChatStatus {
   READY,
   LOADING,
-  ERROR
+  ERROR,
 }
 
 export interface ChatUser {
@@ -23,6 +21,11 @@ export interface ChatMessage {
   text: string;
   author: ChatUser;
   date: string;
+}
+
+export interface ChatError {
+  date: string;
+  message: string;
 }
 
 export interface ChatState {

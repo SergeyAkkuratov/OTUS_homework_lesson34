@@ -13,7 +13,7 @@ export function selectMessagesFromAuthor(
 
 export function selectMessagesAfterDate(
   state: ChatState,
-  date: Date = new Date(),
+  date: Date,
 ): ChatMessage[] {
   return state.messages.filter((message) => new Date(message.date) > date);
 }
