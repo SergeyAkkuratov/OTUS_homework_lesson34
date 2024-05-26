@@ -1,47 +1,47 @@
 import { ChatAction } from "./ChatActions";
 
 export enum ChatRole {
-    ADMIN,
-    USER,
-    MODERATOR
+  ADMIN,
+  USER,
+  MODERATOR,
 }
 
 export enum ChatStatus {
-    READY,
-    LOADING
+  READY,
+  LOADING,
 }
 
 export interface ChatUser {
-    login: string;
-    name: string;
-    email: string;
-    role: ChatRole;
+  login: string;
+  name: string;
+  email: string;
+  role: ChatRole;
 }
 
 export interface ChatMessage {
-    text: string;
-    author: ChatUser;
-    date: Date;
+  text: string;
+  author: ChatUser;
+  date: string;
 }
 
 export interface ChatError extends Error {
-    date: Date;
+  date: string;
 }
 
 export interface ChatState {
-    users: ChatUser[];
-    messages: ChatMessage[];
-    status: ChatStatus,
-    errors: ChatError[]
+  users: ChatUser[];
+  messages: ChatMessage[];
+  status: ChatStatus;
+  errors: ChatError[];
 }
 
 export interface ChatReducersMap {
-    [key: string]: (state: ChatState, action: ChatAction) => ChatState;
+  [key: string]: (state: ChatState, action: ChatAction) => ChatState;
 }
 
 export const initialState: ChatState = {
-    users: [],
-    messages: [],
-    status: ChatStatus.READY,
-    errors: []
-}
+  users: [],
+  messages: [],
+  status: ChatStatus.READY,
+  errors: [],
+};
