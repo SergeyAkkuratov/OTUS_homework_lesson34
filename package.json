@@ -53,6 +53,7 @@
     "*.{js,ts,css,md,yml}": "prettier --write"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.2.5",
     "firebase": "^10.11.1"
   }
 }
