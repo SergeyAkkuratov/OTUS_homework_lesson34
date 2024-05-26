@@ -1,5 +1,6 @@
 import { Action } from "@reduxjs/toolkit";
 import { ChatMessage, ChatUser } from "./ChatState";
+import ChatError from "./ChatError";
 
 export enum ChatActionTypes {
   FETCH_MESSAGES_REQUEST = "FETCH_MESSAGES_REQUEST",
@@ -11,15 +12,19 @@ export enum ChatActionTypes {
   SEND_MESSAGE_REQUEST = "SEND_MESSAGE_REQUEST",
   SEND_MESSAGE_SUCCESS = "SEND_MESSAGE_SUCCESS",
   SEND_MESSAGE_FAILURE = "SEND_MESSAGE_FAILURE",
-  SEARCH_MESSAGES = "SEARCH_MESSAGES",
   FETCH_USERS_REQUEST = "FETCH_USERS_REQUEST",
   FETCH_USERS_SUCCESS = "FETCH_USERS_SUCCESS",
   FETCH_USERS_FAILURE = "FETCH_USERS_FAILURE",
+  SEARCH_MESSAGES = "SEARCH_MESSAGES"
 }
 
 export interface ChatAction extends Action {
   type: ChatActionTypes;
   payload?: unknown;
+}
+
+export interface ChatFilter {
+  (message: ChatMessage): boolean;
 }
 
 export function fetchMessagesRequest(): ChatAction {
@@ -35,7 +40,7 @@ export function fetchMessagesSuccess(messages: ChatMessage[]): ChatAction {
   };
 }
 
-export function fetchMessagesFailure(error: string): ChatAction {
+export function fetchMessagesFailure(error: ChatError): ChatAction {
   return {
     type: ChatActionTypes.FETCH_MESSAGES_FAILURE,
     payload: error,
@@ -55,7 +60,7 @@ export function fetchMessageSuccess(messages: ChatMessage): ChatAction {
   };
 }
 
-export function fetchMessageFailure(error: string): ChatAction {
+export function fetchMessageFailure(error: ChatError): ChatAction {
   return {
     type: ChatActionTypes.FETCH_MESSAGE_FAILURE,
     payload: error,
@@ -75,7 +80,7 @@ export function fetchUsersSuccess(users: ChatUser[]): ChatAction {
   };
 }
 
-export function fetchUsersFailure(error: string): ChatAction {
+export function fetchUsersFailure(error: ChatError): ChatAction {
   return {
     type: ChatActionTypes.FETCH_USERS_FAILURE,
     payload: error,
@@ -95,16 +100,16 @@ export function sendMessageSuccess(message: ChatMessage): ChatAction {
   };
 }
 
-export function sendMessageFailure(error: string): ChatAction {
+export function sendMessageFailure(error: ChatError): ChatAction {
   return {
     type: ChatActionTypes.SEND_MESSAGE_FAILURE,
     payload: error,
   };
 }
 
-export function searchMessages(query: string): ChatAction {
+export function searchMessages(filter: ChatFilter): ChatAction {
   return {
     type: ChatActionTypes.SEARCH_MESSAGES,
-    payload: query,
+    payload: filter,
   };
 }

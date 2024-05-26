@@ -1,4 +1,4 @@
-import { ChatAction } from "./ChatActions";
+import ChatError from "./ChatError";
 
 export enum ChatRole {
   ADMIN,
@@ -9,6 +9,7 @@ export enum ChatRole {
 export enum ChatStatus {
   READY,
   LOADING,
+  ERROR
 }
 
 export interface ChatUser {
@@ -24,19 +25,11 @@ export interface ChatMessage {
   date: string;
 }
 
-export interface ChatError extends Error {
-  date: string;
-}
-
 export interface ChatState {
   users: ChatUser[];
   messages: ChatMessage[];
   status: ChatStatus;
   errors: ChatError[];
-}
-
-export interface ChatReducersMap {
-  [key: string]: (state: ChatState, action: ChatAction) => ChatState;
 }
 
 export const initialState: ChatState = {

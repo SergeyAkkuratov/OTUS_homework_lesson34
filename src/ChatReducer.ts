@@ -1,6 +1,6 @@
-import { ChatAction, ChatActionTypes } from "./ChatActions";
+import { ChatAction, ChatActionTypes, ChatFilter } from "./ChatActions";
+import ChatError from "./ChatError";
 import {
-  ChatError,
   ChatMessage,
   ChatState,
   ChatStatus,
@@ -27,7 +27,7 @@ export default function rootChatReducer(
       const newErrors = structuredClone(state.errors).concat(
         action.payload as ChatError[],
       );
-      return { ...state, errors: newErrors };
+      return { ...state, status: ChatStatus.ERROR, errors: newErrors };
     }
     case ChatActionTypes.FETCH_MESSAGES_SUCCESS: {
       const newMessages = structuredClone(state.messages).concat(
@@ -54,9 +54,8 @@ export default function rootChatReducer(
         users: action.payload as ChatUser[],
       };
     case ChatActionTypes.SEARCH_MESSAGES: {
-      const newMessages = structuredClone(state.messages).concat(
-        action.payload as ChatMessage[],
-      );
+      const filter = action.payload as ChatFilter;
+      const newMessages = state.messages.filter(message => filter(message));
       return { ...state, messages: newMessages };
     }
     default:

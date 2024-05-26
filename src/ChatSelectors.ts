@@ -28,3 +28,15 @@ export function selectUsersWithNameIncludes(
 ): ChatUser[] {
   return state.users.filter((user) => user.name.includes(name));
 }
+
+export function selectStatus(state: ChatState) {
+  return state.status;
+}
+
+export function selectErrors(state: ChatState) {
+  return state.errors;
+}
+
+export function selectLastError(state: ChatState) {
+  return state.errors.at(-1);
+}
