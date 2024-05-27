@@ -60,17 +60,15 @@ describe("Test for Actions", () => {
   });
 
   it("Check request action for loading", () => {
-      store.dispatch(loadingAction());
-      expect(store.getState().status).toBe(ChatStatus.LOADING);
-    },
-  );
+    store.dispatch(loadingAction());
+    expect(store.getState().status).toBe(ChatStatus.LOADING);
+  });
 
   it("Check failure action for error", () => {
-      store.dispatch(errorAction(testError));
-      expect(store.getState().status).toBe(ChatStatus.ERROR);
-      expect(store.getState().errors[0]).toBe(testError);
-    },
-  );
+    store.dispatch(errorAction(testError));
+    expect(store.getState().status).toBe(ChatStatus.ERROR);
+    expect(store.getState().errors[0]).toBe(testError);
+  });
 
   it("Check fetch messages action", () => {
     const messages1 = generateChatMessages(5);

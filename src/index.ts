@@ -7,11 +7,10 @@ import { chatStore, getMessage, sendMessage } from "./chatRedux/ChatStore";
 const rootElement = document.querySelector(".main") as HTMLElement;
 rootElement.innerHTML = `<h2>Чат</h2>
     <div class="chat-window"></div>
-    <form id="chat-form">
-      <input type="text" id="username" placeholder="Ваше имя" value="Sergey" />
-      <input type="text" id="message" placeholder="Введите сообщение" />
-      <button id="send" type="submit">Отправить</button>
-    </form>
+    <input type="text" id="username" placeholder="Ваше имя" value="Sergey" />
+    <input type="text" id="message" placeholder="Введите сообщение" />
+    <button id="send" type="submit">Отправить</button>
+    <br>
     <button id="start">Старт</button>`;
 
 const nicknameField = rootElement.querySelector(
