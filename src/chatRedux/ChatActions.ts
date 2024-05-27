@@ -41,7 +41,7 @@ export function sendMessageAction(message: ChatMessage): ChatAction {
   };
 }
 
-export function searchMessages(query: string): ChatAction {
+export function searchMessagesAction(query: string): ChatAction {
   return {
     type: ChatActionTypes.SEARCH_MESSAGES,
     payload: query,

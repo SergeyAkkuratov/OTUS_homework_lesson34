@@ -12,10 +12,8 @@ import {
   errorAction,
   loadingAction,
   fetchMessagesAction,
-  searchMessages,
-  sendMessageFailure,
+  searchMessagesAction,
   sendMessageAction,
-  sendMessageSuccess,
 } from "./ChatActions";
 
 describe("Test for Actions", () => {
@@ -61,44 +59,40 @@ describe("Test for Actions", () => {
     expect(store.getState()).toEqual(testState);
   });
 
-  it.each([[loadingAction()], [sendMessageAction()]])(
-    "Check request action for %p",
-    (action) => {
-      store.dispatch(action);
+  it("Check request action for loading", () => {
+      store.dispatch(loadingAction());
       expect(store.getState().status).toBe(ChatStatus.LOADING);
     },
   );
 
-  it.each([[errorAction(testError)], [sendMessageFailure(testError)]])(
-    "Check failure action for %p",
-    (action) => {
-      store.dispatch(action);
+  it("Check failure action for error", () => {
+      store.dispatch(errorAction(testError));
       expect(store.getState().status).toBe(ChatStatus.ERROR);
       expect(store.getState().errors[0]).toBe(testError);
     },
   );
 
   it("Check fetch messages action", () => {
-    const message1 = generateChatMessages(5);
-    const message2 = generateChatMessages(5);
+    const messages1 = generateChatMessages(5);
+    const messages2 = generateChatMessages(5);
 
-    store.dispatch(fetchMessagesAction(message1));
+    store.dispatch(fetchMessagesAction(messages1));
     expect(store.getState().status).toBe(ChatStatus.READY);
-    expect(store.getState().messages).toEqual(message1);
+    expect(store.getState().messages).toEqual(messages1);
 
-    store.dispatch(fetchMessagesAction(message2));
-    expect(store.getState().messages).toEqual([...message1, ...message2]);
+    store.dispatch(fetchMessagesAction(messages2));
+    expect(store.getState().messages).toEqual(messages2);
   });
 
   it("Check send message action", () => {
     const message1 = generateChatMessage(0);
     const message2 = generateChatMessage(1);
 
-    store.dispatch(sendMessageSuccess(message1));
+    store.dispatch(sendMessageAction(message1));
     expect(store.getState().status).toBe(ChatStatus.READY);
     expect(store.getState().messages).toEqual([message1]);
 
-    store.dispatch(sendMessageSuccess(message2));
+    store.dispatch(sendMessageAction(message2));
     expect(store.getState().messages).toEqual([message1, message2]);
   });
 
@@ -106,7 +100,7 @@ describe("Test for Actions", () => {
     const messages = generateChatMessages(5);
 
     store.dispatch(fetchMessagesAction(messages));
-    store.dispatch(searchMessages("USER-0"));
+    store.dispatch(searchMessagesAction("USER-0"));
     expect(store.getState().status).toBe(ChatStatus.READY);
     expect(store.getState().messages).toEqual([messages[0]]);
   });
