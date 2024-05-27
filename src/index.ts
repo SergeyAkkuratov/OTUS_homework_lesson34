@@ -2,7 +2,7 @@ import Mustache from "mustache";
 import { ChatMessage, ChatStatus } from "./chatRedux/ChatState";
 import "./style.css";
 import { selectMessages } from "./chatRedux/ChatSelectors";
-import { chatStore, getMessage, sendMessage } from "./chatRedux/ChatStore";
+import { chatStore, getMessage, sendMessage } from "./ChatStore";
 
 const rootElement = document.querySelector(".main") as HTMLElement;
 rootElement.innerHTML = `<h2>Чат</h2>
