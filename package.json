@@ -54,6 +54,8 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.5",
-    "firebase": "^10.11.1"
+    "@types/mustache": "^4.2.5",
+    "firebase": "^10.11.1",
+    "mustache": "^4.2.0"
   }
 }

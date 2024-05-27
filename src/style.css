@@ -5,3 +5,65 @@
   border: 3px solid #333333;
   border-radius: 2% 6% 5% 4% / 1% 1% 2% 4%;
 }
+
+.chat-window {
+  overflow: auto;
+  max-height: 80vh;
+}
+
+h1,
+h2,
+h3 {
+  text-align: center;
+}
+
+.container {
+  border: 2px solid #dedede;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.darker {
+  border-color: #ccc;
+  background-color: #ddd;
+}
+
+.container::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.username {
+  font-weight: 700;
+  font-size: larger;
+}
+
+.time-right {
+  float: right;
+  color: #aaa;
+}
+
+.time-left {
+  float: left;
+  color: #999;
+}
+
+@media (min-width: 450px) {
+  .column {
+    float: left;
+    width: 33.33%;
+  }
+
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}

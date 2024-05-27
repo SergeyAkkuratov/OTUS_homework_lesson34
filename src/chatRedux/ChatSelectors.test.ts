@@ -1,13 +1,7 @@
 import { Store, configureStore } from "@reduxjs/toolkit";
 import { ChatAction } from "./ChatActions";
 import rootChatReducer from "./ChatReducer";
-import {
-  ChatState,
-  ChatUser,
-  ChatMessage,
-  ChatStatus,
-  ChatError,
-} from "./ChatState";
+import { ChatState, ChatMessage, ChatStatus, ChatError } from "./ChatState";
 import {
   selectErrors,
   selectLastError,
@@ -15,25 +9,13 @@ import {
   selectMessagesAfterDate,
   selectMessagesFromAuthor,
   selectStatus,
-  selectUsers,
-  selectUsersWithNameIncludes,
 } from "./ChatSelectors";
 
 describe("Checks for ChatStore selectors", () => {
-  function generateChatUser(index: number): ChatUser {
-    return {
-      login: `login-${index}`,
-      name: `USER-${index}`,
-      email: `user${index}@email.com`,
-      role: Math.floor(Math.random() * 3),
-    };
-  }
-
   function generateChatMessage(index: number): ChatMessage {
-    const user = generateChatUser(index);
     return {
-      nickname: user,
-      text: `It's generated message from ${user.name}`,
+      nickname: `USER-${index}`,
+      text: `It's generated message from USER-${index}`,
       date: new Date().toISOString(),
     };
   }
@@ -84,16 +66,9 @@ describe("Checks for ChatStore selectors", () => {
   });
 
   it("Check select messages from author", () => {
-    const { author } = store.getState().messages[0];
-    const recived = selectMessagesFromAuthor(store.getState(), author);
+    const { nickname } = store.getState().messages[0];
+    const recived = selectMessagesFromAuthor(store.getState(), nickname);
     const expected = [store.getState().messages[0]];
-
-    expect(recived).toEqual(expected);
-  });
-
-  it("Check select users with name contains string", () => {
-    const recived = selectUsersWithNameIncludes(store.getState(), "USER");
-    const expected = store.getState().users;
 
     expect(recived).toEqual(expected);
   });

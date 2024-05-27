@@ -9,12 +9,12 @@ import {
 } from "./ChatState";
 import {
   ChatAction,
-  fetchMessagesFailure,
-  fetchMessagesRequest,
-  fetchMessagesSuccess,
+  errorAction,
+  loadingAction,
+  fetchMessagesAction,
   searchMessages,
   sendMessageFailure,
-  sendMessageRequest,
+  sendMessageAction,
   sendMessageSuccess,
 } from "./ChatActions";
 
@@ -61,32 +61,32 @@ describe("Test for Actions", () => {
     expect(store.getState()).toEqual(testState);
   });
 
-  it.each([
-    [fetchMessagesRequest()],
-    [sendMessageRequest()],
-  ])("Check request action for %p", (action) => {
-    store.dispatch(action);
-    expect(store.getState().status).toBe(ChatStatus.LOADING);
-  });
+  it.each([[loadingAction()], [sendMessageAction()]])(
+    "Check request action for %p",
+    (action) => {
+      store.dispatch(action);
+      expect(store.getState().status).toBe(ChatStatus.LOADING);
+    },
+  );
 
-  it.each([
-    [fetchMessagesFailure(testError)],
-    [sendMessageFailure(testError)],
-  ])("Check failure action for %p", (action) => {
-    store.dispatch(action);
-    expect(store.getState().status).toBe(ChatStatus.ERROR);
-    expect(store.getState().errors[0]).toBe(testError);
-  });
+  it.each([[errorAction(testError)], [sendMessageFailure(testError)]])(
+    "Check failure action for %p",
+    (action) => {
+      store.dispatch(action);
+      expect(store.getState().status).toBe(ChatStatus.ERROR);
+      expect(store.getState().errors[0]).toBe(testError);
+    },
+  );
 
   it("Check fetch messages action", () => {
     const message1 = generateChatMessages(5);
     const message2 = generateChatMessages(5);
 
-    store.dispatch(fetchMessagesSuccess(message1));
+    store.dispatch(fetchMessagesAction(message1));
     expect(store.getState().status).toBe(ChatStatus.READY);
     expect(store.getState().messages).toEqual(message1);
 
-    store.dispatch(fetchMessagesSuccess(message2));
+    store.dispatch(fetchMessagesAction(message2));
     expect(store.getState().messages).toEqual([...message1, ...message2]);
   });
 
@@ -105,7 +105,7 @@ describe("Test for Actions", () => {
   it("Check search messages action", () => {
     const messages = generateChatMessages(5);
 
-    store.dispatch(fetchMessagesSuccess(messages));
+    store.dispatch(fetchMessagesAction(messages));
     store.dispatch(searchMessages("USER-0"));
     expect(store.getState().status).toBe(ChatStatus.READY);
     expect(store.getState().messages).toEqual([messages[0]]);
