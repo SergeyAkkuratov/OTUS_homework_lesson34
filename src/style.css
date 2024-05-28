@@ -1,69 +1,85 @@
 .main {
-  overflow: auto;
-  margin: 0 auto;
-  padding: 2rem 2rem;
-  border: 3px solid #333333;
-  border-radius: 2% 6% 5% 4% / 1% 1% 2% 4%;
+    overflow: auto;
+    margin: 0 auto;
+    padding: 2rem 2rem;
+    border: 3px solid #333333;
+    border-radius: 2% 6% 5% 4% / 1% 1% 2% 4%;
 }
 
 .chat-window {
-  overflow: auto;
-  max-height: 80vh;
+    overflow: auto;
+    max-height: 80vh;
 }
 
 h1,
 h2,
 h3 {
-  text-align: center;
+    text-align: center;
 }
 
 .container {
-  border: 2px solid #dedede;
-  background-color: #f1f1f1;
-  border-radius: 5px;
-  padding: 10px;
-  margin: 10px 0;
+    border: 2px solid #dedede;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
 }
 
 .darker {
-  border-color: #ccc;
-  background-color: #ddd;
+    border-color: #ccc;
+    background-color: #ddd;
 }
 
 .container::after {
-  content: "";
-  clear: both;
-  display: table;
+    content: "";
+    clear: both;
+    display: table;
 }
 
 .text-right {
-  text-align: right;
+    text-align: right;
 }
 
-.username {
-  font-weight: 700;
-  font-size: larger;
+.message {
+    font-weight: 700;
+    font-size: larger;
 }
 
 .time-right {
-  float: right;
-  color: #aaa;
+    float: right;
+    color: #aaa;
 }
 
 .time-left {
-  float: left;
-  color: #999;
+    float: left;
+    color: #999;
+}
+
+.send-message {
+    width: 95%;
+}
+
+.emoji-window {
+    display: none;
+    position: fixed;
+    z-index: 99999;
+    top: 0;
+    left: 0;
+    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.54);
+    background-color: white;
+    border-radius: 4px;
+    padding: 4px;
 }
 
 @media (min-width: 450px) {
-  .column {
-    float: left;
-    width: 33.33%;
-  }
+    .column {
+        float: left;
+        width: 33.33%;
+    }
 
-  .row:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
 }
