@@ -9,7 +9,7 @@ export const chatStore = configureStore({
     preloadedState: initialState,
 });
 
-export function getMessage() {
+export function getMessages() {
     return async (dispatch: typeof chatStore.dispatch) => {
         dispatch(loadingAction());
         try {

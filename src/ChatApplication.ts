@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
 import Mustache from "mustache";
-import { ChatMessage, ChatStatus } from "./chatRedux/ChatState";
+import { ChatMessage } from "./chatRedux/ChatState";
 import { selectMessages } from "./chatRedux/ChatSelectors";
-import { chatStore, getMessage, sendMessage } from "./ChatStore";
+import { chatStore, getMessages, sendMessage } from "./ChatStore";
 
 export default function chatApplication(rootElement: HTMLElement) {
     rootElement.innerHTML = `<h2>Чат</h2>
@@ -55,27 +55,24 @@ export default function chatApplication(rootElement: HTMLElement) {
             ownMessage(): boolean {
                 return this.nickname === nickname;
             },
-            loading(): boolean {
-                return chatStore.getState().status === ChatStatus.LOADING;
-            },
         });
         chatWindow.scrollTop = chatWindow.scrollHeight;
     }
 
     function onStartClick() {
-        if (startButton.innerText === "Старт") {
-            chatStore.dispatch(getMessage());
+        if (startButton.innerHTML === "Старт") {
+            chatStore.dispatch(getMessages());
 
-            startButton.innerText = "Стоп";
+            startButton.innerHTML = "Стоп";
             nickname = nicknameField.value;
             nicknameField.readOnly = true;
             messageField.readOnly = false;
             emojiButton.disabled = false;
 
-            interval = setInterval(() => chatStore.dispatch(getMessage()), 1000);
+            interval = setInterval(() => chatStore.dispatch(getMessages()), 1000);
             messageField.focus();
         } else {
-            startButton.innerText = "Старт";
+            startButton.innerHTML = "Старт";
             clearInterval(interval);
             nicknameField.readOnly = false;
             messageField.readOnly = true;
@@ -113,7 +110,7 @@ export default function chatApplication(rootElement: HTMLElement) {
     function emojiWindowClick(event: MouseEvent) {
         event.stopPropagation();
         if (event.target instanceof HTMLHeadingElement && emojiElements.includes(event.target)) {
-            messageField.value += event.target.innerText;
+            messageField.value += event.target.innerHTML;
             emojiMenuClose();
             messageField.focus();
         }
