@@ -156,5 +156,5 @@ describe("chatApplication", () => {
         chatWindow.scrollTop = -100;
         (chatStore.subscribe as jest.Mock).mock.calls[0][0]();
         expect(chatWindow.scrollTop).not.toBe(chatWindow.scrollHeight);
-    })
+    });
 });

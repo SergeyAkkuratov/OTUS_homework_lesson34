@@ -6,7 +6,7 @@ import { chatStore, getMessages, sendMessage } from "./ChatStore";
 
 enum startButtonText {
     START = "Старт",
-    STOP = "Стоп"
+    STOP = "Стоп",
 }
 
 export const CHAT_GET_MESSAGE_INTERVAL = 5000;
@@ -61,7 +61,7 @@ export default function chatApplication(rootElement: HTMLElement) {
     let nickname: string;
 
     function render() {
-        const isAtBottom = (chatWindow.scrollHeight - chatWindow.clientHeight <= chatWindow.scrollTop + 1);
+        const isAtBottom = chatWindow.scrollHeight - chatWindow.clientHeight <= chatWindow.scrollTop + 1;
         chatWindow.innerHTML = Mustache.render(messageWindowTemplate, {
             messages: selectMessages(chatStore.getState()),
             ownMessage(): boolean {
