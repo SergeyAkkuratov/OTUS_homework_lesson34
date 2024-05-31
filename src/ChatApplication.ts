@@ -4,11 +4,21 @@ import { ChatMessage } from "./chatRedux/ChatState";
 import { selectMessages } from "./chatRedux/ChatSelectors";
 import { chatStore, getMessages, sendMessage } from "./ChatStore";
 
+enum startButtonText {
+    START = "Старт",
+    STOP = "Стоп"
+}
+
+export const CHAT_GET_MESSAGE_INTERVAL = 5000;
+
 export default function chatApplication(rootElement: HTMLElement) {
     rootElement.innerHTML = `<h2>Чат</h2>
-    <input type="text" id="username" placeholder="Ваше имя" value="Sergey" /><button id="start">Старт</button>
+    <input type="text" id="username" placeholder="Ваше имя" value="Sergey" /><button id="start">${startButtonText.START}</button>
     <div class="chat-window"></div>
-    <button class="emoji" disabled=true>🙂</button><input type="text" class="send-message" placeholder="Введите сообщение" readonly="readonly" />
+    <button class="emoji" disabled=true>🙂</button>
+    <form class="chat-form">
+    <input type="text" class="send-message" placeholder="Введите сообщение" readonly="readonly" />
+    </form>
     <div class="emoji-window">
     <h3>😃</h3>
     <h3>😊</h3>
@@ -19,6 +29,7 @@ export default function chatApplication(rootElement: HTMLElement) {
 
     const nicknameField: HTMLInputElement = rootElement.querySelector("#username")!;
     const messageField: HTMLInputElement = rootElement.querySelector(".send-message")!;
+    const chatForm: HTMLFormElement = rootElement.querySelector(".chat-form")!;
     const startButton: HTMLButtonElement = rootElement.querySelector("#start")!;
     const emojiButton: HTMLButtonElement = rootElement.querySelector(".emoji")!;
     const chatWindow: HTMLElement = rootElement.querySelector(".chat-window")!;
@@ -50,29 +61,32 @@ export default function chatApplication(rootElement: HTMLElement) {
     let nickname: string;
 
     function render() {
+        const isAtBottom = (chatWindow.scrollHeight - chatWindow.clientHeight <= chatWindow.scrollTop + 1);
         chatWindow.innerHTML = Mustache.render(messageWindowTemplate, {
             messages: selectMessages(chatStore.getState()),
             ownMessage(): boolean {
                 return this.nickname === nickname;
             },
         });
-        chatWindow.scrollTop = chatWindow.scrollHeight;
+        if (isAtBottom) {
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
     }
 
     function onStartClick() {
-        if (startButton.innerHTML === "Старт") {
+        if (startButton.innerHTML === startButtonText.START) {
             chatStore.dispatch(getMessages());
 
-            startButton.innerHTML = "Стоп";
+            startButton.innerHTML = startButtonText.STOP;
             nickname = nicknameField.value;
             nicknameField.readOnly = true;
             messageField.readOnly = false;
             emojiButton.disabled = false;
 
-            interval = setInterval(() => chatStore.dispatch(getMessages()), 1000);
+            interval = setInterval(() => chatStore.dispatch(getMessages()), CHAT_GET_MESSAGE_INTERVAL);
             messageField.focus();
         } else {
-            startButton.innerHTML = "Старт";
+            startButton.innerHTML = startButtonText.START;
             clearInterval(interval);
             nicknameField.readOnly = false;
             messageField.readOnly = true;
@@ -80,16 +94,15 @@ export default function chatApplication(rootElement: HTMLElement) {
         }
     }
 
-    function sendMessageByEnter(event: KeyboardEvent) {
-        if (event.key === "Enter") {
-            const message: ChatMessage = {
-                date: new Date().toISOString(),
-                nickname: nicknameField.value,
-                text: messageField.value,
-            };
-            chatStore.dispatch(sendMessage(message));
-            messageField.value = "";
-        }
+    function sendMessageByEnter(event: Event) {
+        event.preventDefault();
+        const message: ChatMessage = {
+            date: new Date().toISOString(),
+            nickname: nicknameField.value,
+            text: messageField.value,
+        };
+        chatStore.dispatch(sendMessage(message));
+        messageField.value = "";
     }
 
     function emojiMenuClose() {
@@ -119,7 +132,7 @@ export default function chatApplication(rootElement: HTMLElement) {
     chatStore.subscribe(render);
 
     render();
-    messageField.addEventListener("keyup", sendMessageByEnter);
+    chatForm.addEventListener("submit", sendMessageByEnter);
     startButton.addEventListener("click", onStartClick);
     emojiButton.addEventListener("click", emojiMenuOpen);
     emojiWindow.addEventListener("click", emojiWindowClick);

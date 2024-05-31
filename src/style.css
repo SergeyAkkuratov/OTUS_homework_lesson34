@@ -59,6 +59,10 @@ h3 {
     width: 95%;
 }
 
+.chat-form {
+    display: inline;
+}
+
 .emoji-window {
     display: none;
     position: fixed;

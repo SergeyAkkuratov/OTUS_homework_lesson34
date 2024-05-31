@@ -61,15 +61,15 @@ describe("chatApplication", () => {
         expect(emojiButton.disabled).toBe(true);
     });
 
-    it("should send a message on Enter key press", () => {
+    it("should send a message on for submit", () => {
         chatApplication(rootElement);
         const messageField = rootElement.querySelector(".send-message") as HTMLInputElement;
+        const chatForm = rootElement.querySelector(".chat-form") as HTMLInputElement;
         const nicknameField = rootElement.querySelector("#username") as HTMLInputElement;
         nicknameField.value = "TestUser";
         messageField.value = "Hello";
 
-        const event = new KeyboardEvent("keyup", { key: "Enter" });
-        messageField.dispatchEvent(event);
+        chatForm.dispatchEvent(new Event("submit"));
 
         const expectedMessage: ChatMessage = {
             date: expect.any(String),
@@ -143,5 +143,18 @@ describe("chatApplication", () => {
 
         (chatStore.subscribe as jest.Mock).mock.calls[0][0]();
         expect(chatWindow.innerHTML).toContain("Hello");
+        expect(chatWindow.scrollTop).toBe(chatWindow.scrollHeight);
     });
+
+    it("shouldn't scroll to bottom while show not bottom element", () => {
+        chatApplication(rootElement);
+        const chatWindow = rootElement.querySelector(".chat-window") as HTMLElement;
+        const messages = Array(50).fill({ nickname: "TestUser", text: "Hello", date: "2023-01-01T00:00:00Z" });
+        (selectMessages as jest.Mock).mockReturnValue(messages);
+        (chatStore.getState as jest.Mock).mockReturnValue({ status: "LOADED" });
+
+        chatWindow.scrollTop = -100;
+        (chatStore.subscribe as jest.Mock).mock.calls[0][0]();
+        expect(chatWindow.scrollTop).not.toBe(chatWindow.scrollHeight);
+    })
 });
