@@ -38,9 +38,9 @@
 Для локального запуска приложения вам нужно склонировать проект, скачать зависимости и скрипт запуска:
 
 ```bash
-git clone https://github.com/SergeyAkkuratov/OTUS_homework_lesson47.git ./outlays
+git clone https://github.com/SergeyAkkuratov/OTUS_homework_lesson47.git ./chat
 
-cd ./outlays
+cd ./chat
 
 npm install
 
